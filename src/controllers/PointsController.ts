@@ -17,7 +17,8 @@ class PointsController {
       const trx = await connection.transaction(); // transaction, now it will finish all the calls for trx if all of them succeeds
 
       const point = {
-        image: "image-fake",
+        image:
+          "https://images.unsplash.com/photo-1569180880150-df4eed93c90b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
         name,
         email,
         whatsapp,
