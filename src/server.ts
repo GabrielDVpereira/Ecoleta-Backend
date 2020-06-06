@@ -20,7 +20,7 @@
   - crate database/migrations
   - create your migration (can be created by command line, but Diago is creating by himself) - http://knexjs.org/#Migrations-CLI
   - create knexfile.ts in the root directory
-  - run npx knex migrate:latest --knexfile knexfile.ts migrate:latest to populate the db 
+  - run npx knex --knexfile knexfile.ts migrate:latest to populate the db 
 */
 
 /*
@@ -37,10 +37,10 @@ import cors from "cors";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(routes);
-app.use(cors());
 app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads"))); // express.static is a express funtin made specially to acess static files like images, word files and so on
-//http://localhost:3333/uploads/baterias.svg will show a image
+//http://localhost:5000/uploads/baterias.svg will show a image
 
-app.listen(3333);
+app.listen(5000);
