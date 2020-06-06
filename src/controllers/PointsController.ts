@@ -17,8 +17,7 @@ class PointsController {
       const trx = await connection.transaction(); // transaction, now it will finish all the calls for trx if all of them succeeds
 
       const point = {
-        image:
-          "https://images.unsplash.com/photo-1569180880150-df4eed93c90b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
+        image: req.file.filename,
         name,
         email,
         whatsapp,
@@ -31,12 +30,15 @@ class PointsController {
 
       const point_id = insertedIds[0];
 
-      const pointItems = items.map((item_id: number) => {
-        return {
-          item_id,
-          point_id,
-        };
-      });
+      const pointItems = items
+        .split(",")
+        .map((item: string) => Number(item.trim()))
+        .map((item_id: number) => {
+          return {
+            item_id,
+            point_id,
+          };
+        });
 
       await trx("point_items").insert(pointItems);
 
@@ -60,7 +62,12 @@ class PointsController {
         .where("point_items.point_id", id)
         .select("items.title"); // bringing all items that has point id passsed through params
 
-      return res.json({ point, items });
+      const serializedPoint = {
+        ...point,
+        image_url: `http://192.168.0.31:5000/uploads/${point.image}`,
+      };
+
+      return res.json({ serializedPoint, items });
     } catch (error) {
       return res.status(400).json({ error: error.message || error });
     }
@@ -80,7 +87,12 @@ class PointsController {
       .where("uf", String(uf))
       .distinct()
       .select("points.*");
-    return res.json(points);
+
+    const serializedPoints = points.map((point) => ({
+      ...points,
+      image_url: `http://192.168.0.31:5000/uploads/${point.image}`,
+    }));
+    return res.json(serializedPoints);
   }
 }
 
