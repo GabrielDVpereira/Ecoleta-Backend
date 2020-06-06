@@ -34,6 +34,7 @@ import express from "express";
 import routes from "./routes";
 import path from "path";
 import cors from "cors";
+import { errors } from "celebrate";
 
 const app = express();
 
@@ -42,5 +43,6 @@ app.use(express.json());
 app.use(routes);
 app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads"))); // express.static is a express funtin made specially to acess static files like images, word files and so on
 //http://localhost:5000/uploads/baterias.svg will show a image
+app.use(errors());
 
 app.listen(5000);
